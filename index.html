@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moodify</title>
+<style>
+body{margin:0;background:#100d20;color:white;font-family:Arial;text-align:center;padding:25px 15px}
+h1{color:#c6a5ff;font-size:42px}
+.card{background:#211b38;max-width:450px;margin:20px auto;padding:22px;border-radius:20px}
+textarea{width:95%;height:90px;border-radius:12px;padding:10px;font-size:16px}
+button{background:#9063e8;color:white;border:0;padding:13px 18px;margin:6px;border-radius:12px}
+.song{background:#392d54;padding:12px;border-radius:12px;margin:8px}
+audio{width:100%;margin-top:15px}
+</style>
+</head>
+<body>
+<h1>🎧 Moodify</h1>
+<p>Your mood, your music.</p>
+
+<div class="card">
+<h2>💜 오늘 기분은 어때?</h2>
+<textarea id="feeling" placeholder="지금 기분을 적어줘!"></textarea>
+<br>
+<button onclick="analyze()">✨ 감정 분석하기</button>
+<div id="result"></div>
+</div>
+
+<div class="card">
+<h2>🎵 너를 위한 추천 음악</h2>
+<div id="songs">먼저 감정을 분석해 줘!</div>
+<audio id="player" controls></audio>
+<p id="playing">음악을 선택해 줘.</p>
+</div>
+
+<script>
+const tracks={
+행복:["밝고 신나는 팝 음악","기분 좋은 어쿠스틱 음악"],
+슬픔:["따뜻한 위로 음악","잔잔한 피아노 음악"],
+피곤:["편안한 휴식 음악","차분한 연주 음악"],
+신남:["신나는 댄스 음악","에너지 넘치는 팝 음악"],
+불안:["차분한 앰비언트 음악","편안한 피아노 음악"]
+};
+
+function analyze(){
+let t=document.getElementById("feeling").value;
+if(!t.trim()){alert("기분을 먼저 적어줘!");return;}
+let m="행복";
+if(/슬프|우울|속상|외로/.test(t))m="슬픔";
+else if(/피곤|졸려|지쳐/.test(t))m="피곤";
+else if(/신나|즐거|재밌|설레/.test(t))m="신남";
+else if(/불안|걱정|긴장/.test(t))m="불안";
+document.getElementById("result").innerHTML="<h3>분석 결과: "+m+" 💜</h3><p>"+m+" 분위기의 음악을 추천할게!</p>";
+document.getElementById("songs").innerHTML="";
+tracks[m].forEach(s=>{
+let d=document.createElement("div");
+d.className="song";
+d.textContent="🎵 "+s;
+document.getElementById("songs").appendChild(d);
+});
+}
+</script>
+</body>
+</html>
